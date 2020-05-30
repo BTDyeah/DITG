@@ -56,27 +56,21 @@ public:
         name = n;
         score = s;
     }
-    #define out 0
-    #define in 1
+
     int countSubstring(std::string text){
         int count = 0; 
-        //int out = 0, in = 1;
+        int out = 0, in = 1;
         int state = out;
-        int charCount = 0;
-
+        
         for(std::string::iterator it = text.begin(); it != text.end(); ++it){
-            
             if(state == out){
                 state = in;
                 ++count;
             }
             else 
-                if(text[charCount] == ' ' || text[charCount] == '\n' || text[charCount] == '\t')
+                if(*it == ' ' || *it == '\n' || *it == '\t')
                     state = out;
-            charCount++;
-                
         }
-        
         return count;
     }
 

@@ -7,7 +7,8 @@
            just before the "Start Typing" and give the user message "You have 10 seconds to start:"
     2. Make three more levels: intermidate, hard, hardcore. Every stage has it's own Pink Floyd song, and different scoring statements
     3. Arrange the code to look cleaner, maybe put the class in different file
-        4. Make an easter egg if a user has any of the names of the band members, send them a cool message or something
+    4. Make an easter egg if a user has name of a band, add additional conversation like "what's your favourite song from ur username?"
+       if it is same as mine then "Great! Same as me!" otherwise "Great! Mine is: *name of the song*"
         5. Try to use SQl and mySQL and try to save the names as data of users, there is no need for password IMHO
         6. Make a visual version of this console program in SFML
         7. Make the timer work as it should
@@ -17,7 +18,11 @@
         9. Store things on heap when user decides which difficulty they want. That way it will consume less memory
            plus there will be like infinity tries to get the right level. Tho, the only thing we really need is one more
            try, but if user's gonna mess up for days not getting the ENHU then let them be
-        10. By the way, name of the game is ENHU - Enormously Normal but Hilarious Utopia aka first letter of difficulties
+        10. Name the game something like "Musical Typing Speed Test"
+        11. Mention and provide all of the links necessery and try not to get in copyright infrigment trouble. If you have to use something else,
+            switch the name of the game to something else and then search for non-copyright books or texts
+        12. There is a huge bug. It might need to be refactored as a whole algorithm. I hope not, truly hope not. So, if you write first word wrong
+            every next one will count as zero. I want this game to count zero if a word is wrong at any place as well as true in any place
 */
 
 int main(){
@@ -26,6 +31,59 @@ int main(){
     std::cout << "Input your name, master\n";
     std::getline(std::cin, name);
 
+    /*EASTER EGGS*/
+    /*The catch is that user has to have an excat name of the original band*/
+
+    std::string favSong;
+
+    if(name == "Metallica"){
+        std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+        std::getline(std::cin,favSong);   
+        if(favSong == "Blackend")
+            std::cout << "Great! Same as mine! Enjoy your typing game!\n";
+        else
+            std::cout << "Great! Mine is \"Blackend\"! Enjoy your typing game!\n";
+    }
+    else
+        if(name == "The Beatles"){
+            std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+            std::getline(std::cin,favSong);   
+            
+            if(favSong == "I wanna hold your hand")
+                std::cout << "Great! Same as mine! Enjoy your typing game!\n";
+            else
+                std::cout << "Great! Mine is \"I wanna hold your hand\"! Enjoy your typing game!\n";
+        }
+        else
+            if(name == "Pink Floyd"){
+                std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+                std::getline(std::cin,favSong);   
+                
+                if(favSong == "Hey You")
+                    std::cout << "Great! Same as mine! Enjoy your typing game!\n";
+                else
+                    std::cout << "Great! Mine is \"Hey You\"!. Enjoy your typing game!\n";
+            }
+            else
+                if(name == "Slayer"){
+                    std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+                    std::getline(std::cin,favSong);   
+                    
+                    if(favSong == "Season in Abyss")
+                        std::cout << "Great! Same as mine! Enjoy your typing game!\n";
+                    else
+                        std::cout << "Great! Mine is \"Season in Abyss\"! Enjoy your typing game!\n";
+                }
+                else
+                    if(name == "Nirvana"){
+                        std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+                        std::getline(std::cin,favSong);   
+                        
+                        if(favSong == "Drain You")
+                            std::cout << "Great! Same as mine! Enjoy your typing game!\n";
+                        else
+                            std::cout << "Great! Mine is \"Drain You\"! Enjoy your typing game!\n";
+                    }
     Speed obj(name);     
     obj.countScore();
     

@@ -14,7 +14,7 @@ private:
     std::string setDifficulty();
 public:
     Speed(std::string n); //ctor
-    void countScore(); 
+    int countScore(); 
     void startSpeed();
     void checkScore();      
 };

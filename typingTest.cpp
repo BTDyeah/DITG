@@ -29,8 +29,7 @@
 
 int main(){
     
-    std::cout << "Hello and welcome to \e[1mDI Typing Game!\e[0m\n";
-    std::cout << "Definetly Interesting Typing Game\n";
+    std::cout << "Hello and welcome to \e[1mDITG - Definetly Interesting Typing Game!\e[0m\n";
     std::string name;
     std::cout << "Please input your name\n";
     std::getline(std::cin, name);
@@ -88,8 +87,10 @@ int main(){
                         else
                             std::cout << "Great! Mine is \"Drain You\"! Enjoy your typing game!\n";
                     }
+
     Speed obj(name);     
     obj.countScore();
+    obj.checkScore();
     
     return 0;
 }

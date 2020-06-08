@@ -48,11 +48,11 @@ std::string Speed::setDifficulty(){
     return text;
 }
 
-void Speed::countScore(){
+int Speed::countScore(){
     std::string selectedText = setDifficulty();
     
     if(selectedText == " ") // this might be unnecessary but i am not sure
-        return;
+        return 0;
     
     std::cout << selectedText;
     std::cout << "\nStart typing: \n";
@@ -70,7 +70,7 @@ void Speed::countScore(){
         else 
             continue;
     }
-    checkScore();
+    return score;
 }
 /*WORK ON THIS BAKA YARO*/
 void Speed::startSpeed(){

@@ -1,20 +1,19 @@
+#ifndef SPEED_H
+#define SPEED_H
 #include <string>
-#pragma once
 
 class Speed {
 private:
     std::string name; //user name
     int score; //score
-    std::string givenTextEasy; // Easy level text
-    std::string givenTextNormal; // Normal level text
-    std::string givenTextHard; // Hard level text
-    std::string givenTextUltra; // Ultra level text
+    std::string testText; // text for testing purposes
     std::string userText; // usersText
-    bool compareChar(char first, char second);
-    std::string setDifficulty();
 public:
     Speed(std::string n); //ctor
-    int countScore(); 
-    void startSpeed();
-    void checkScore();      
+    void countScore();
+private:
+    bool compareChar(char first, char second);
+    void checkScore();
+    void checkEasterEggs();
 };
+#endif

@@ -1,6 +1,7 @@
 #ifndef SPEED_H
 #define SPEED_H
 #include <string>
+#include <iostream>
 
 class Speed {
 private:
@@ -11,9 +12,11 @@ private:
 public:
     Speed(std::string n); //ctor
     void countScore();
+    void cantGetNo();
 private:
     bool compareChar(char first, char second);
     void checkScore();
     void checkEasterEggs();
+    std::istream& getline (std::istream& is, std::string& str);
 };
 #endif

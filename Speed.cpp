@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <chrono>
+#include <iterator>
 
 Speed::Speed(std::string n){
     name = n;
@@ -13,7 +14,7 @@ void Speed::countScore(){
     checkEasterEggs();
     std::cout << testText;
     std::cout << "\nYou have 60 seconds! Start typing now: \n";
-    
+    /*try to either overload the getline function if possible or just make your own*/
     auto start = std::chrono::high_resolution_clock::now();    
     std::getline(std::cin, userText);
     
@@ -73,8 +74,7 @@ bool Speed::compareChar(char first, char second){
         return false;
 }
 
-void Speed::checkEasterEggs() {
-        /*EASTER EGGS*/
+void Speed::checkEasterEggs() { /*EASTER EGGS*/
     /*The catch is that user has to have an excat name of the original band*/
 
     std::string favSong;
@@ -130,4 +130,20 @@ void Speed::checkEasterEggs() {
                     else {
                         std::cout << "Hello " << name << "! Enjoy!\n\n";
                     }
+}
+
+std::istream& Speed::getline(std::istream& is, std::string& str){
+    int i = 0;
+    while (is.peek() != '\n') {
+        is >> std::noskipws >> str[i];
+        str.push_back(str[i]);
+        i++;
+    }
+    return is;
+}
+
+void Speed::cantGetNo(){
+    std::string str;
+    getline(std::cin, str);   
+    std::cout << str << std::endl;
 }

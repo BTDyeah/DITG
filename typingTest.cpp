@@ -31,14 +31,23 @@
 
 int main(){
     
-    std::cout << "Hello and welcome to \e[1mDITG - Definetly Interesting Typing Game!\e[0m\n";
+    /*std::cout << "Hello and welcome to \e[1mDITG - Definetly Interesting Typing Game!\e[0m\n";
     std::string name;
     std::cout << "Please input your name:\n";
     std::getline(std::cin, name);
 
     Speed obj(name);     
-    //obj.checkEasterEggs();
     obj.countScore();
-    
+    std::string fullNameZero;
+    std::getline(std::cin, fullNameZero);
+    std::string fullNameOne;
+    std::cin >> fullNameOne;
+    std::cout << fullNameZero << std::endl;
+    std::cout << fullNameOne << std::endl;
+*/
+    std::string name = "suck it";
+    Speed obj(name);
+    obj.cantGetNo();
+
     return 0;
 }

@@ -13,6 +13,7 @@ public:
     Speed(std::string n); //ctor
     void countScore();
     void cantGetNo();
+    void timer();
 private:
     bool compareChar(char first, char second);
     void checkScore();

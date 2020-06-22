@@ -2,7 +2,8 @@
 #include <string>
 #include <iostream>
 #include <chrono>
-#include <iterator>
+#include <curses.h>
+/*Poruka od mene za mene: instaliraj sfml ovde na ubucnua*/
 
 Speed::Speed(std::string n){
     name = n;
@@ -14,19 +15,8 @@ void Speed::countScore(){
     checkEasterEggs();
     std::cout << testText;
     std::cout << "\nYou have 60 seconds! Start typing now: \n";
-    /*try to either overload the getline function if possible or just make your own*/
-    auto start = std::chrono::high_resolution_clock::now();    
-    std::getline(std::cin, userText);
     
-    auto end = std::chrono::high_resolution_clock::now();
-
-    std::chrono::duration<float> Duration = end - start;
-    int time = Duration.count();
-    
-    if(time > 60){
-        std::cout << "You failed to enter text in given time!\n";
-        exit(0);
-    }
+    getline(std::cin, userText);
 
     int i, j;    
     for(i = 0, j = 0; i < testText.length() && j < userText.length(); ++i, ++j){
@@ -133,12 +123,65 @@ void Speed::checkEasterEggs() { /*EASTER EGGS*/
 }
 
 std::istream& Speed::getline(std::istream& is, std::string& str){
-    int i = 0;
+    
+    /*
+        The idea is to print an array of 60 elements, which represent seconds, then at every second to remove the highest number (60) until we get to
+        1 when user will be able to write but will be terminated. Ideally, i would terminate the input at that stage but i have no idea how+
+    */
+    //std::cout << "\n\n";
+    //auto start = std::chrono::high_resolution_clock::now();
+    /*WINDOW* screen = curscr;
+    int secondsLeft = 10;
+    char c;
+    initscr();
+    newwin(1, 1, getmaxy(screen) / 2, getmaxx(screen));
+    refresh();
+    curs_set(2);
+    do {
+      printw("%i", secondsLeft);
+      refresh();
+      erase();
+      secondsLeft--;
+      napms(1000);
+    } 
+    while (secondsLeft > 0);
+    std::cout << "\n";
+    
+    newwin(1, 1, getmaxy(screen), getmaxx(screen));
+
     while (is.peek() != '\n') {
-        is >> std::noskipws >> str[i];
-        str.push_back(str[i]);
-        i++;
+        is >> std::noskipws >> c;
+        str.push_back(c);
     }
+    endwin();*/
+    
+    int parent_x, parent_y;
+    int score_size = 3;
+    initscr(); 
+    noecho(); 
+    curs_set(FALSE); // get our maximum window dimensions 
+    getmaxyx(stdscr, parent_y, parent_x); // set up initial windows 
+    WINDOW *field = newwin(parent_y - score_size, parent_x, 0, 0); 
+    WINDOW *score = newwin(score_size, parent_x, parent_y - score_size, 0); // draw to our windows 
+    mvwprintw(field, 0, 0, "Field");
+    int secondsLeft = 10;
+    char c;
+    //curs_set(2);
+    do {
+      printw("%i", secondsLeft);
+      refresh();
+      erase();
+      secondsLeft--;
+      napms(1000);
+    } 
+    while (secondsLeft > 0); 
+    mvwprintw(score, 0, 0, "Score"); // refresh each window 
+    wrefresh(field); 
+    wrefresh(score); 
+    napms(10000); // clean up 
+    delwin(field); 
+    delwin(score); 
+    endwin();
     return is;
 }
 

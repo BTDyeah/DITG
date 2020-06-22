@@ -30,24 +30,16 @@
 */
 
 int main(){
-    
-    /*std::cout << "Hello and welcome to \e[1mDITG - Definetly Interesting Typing Game!\e[0m\n";
+/*    
+    std::cout << "Hello and welcome to \e[1mDITG - Definetly Interesting Typing Game!\e[0m\n";
     std::string name;
-    std::cout << "Please input your name:\n";
+    std::cout << "Please input your name. After doing that you'll have 60 seconds to press \"enter\" and finish the program. If you do not do\
+ that in a given time, your score won't count!\n";
     std::getline(std::cin, name);
-
-    Speed obj(name);     
-    obj.countScore();
-    std::string fullNameZero;
-    std::getline(std::cin, fullNameZero);
-    std::string fullNameOne;
-    std::cin >> fullNameOne;
-    std::cout << fullNameZero << std::endl;
-    std::cout << fullNameOne << std::endl;
 */
-    std::string name = "suck it";
-    Speed obj(name);
+    auto name = "mile";
+    Speed obj(name);     
+    //obj.countScore();
     obj.cantGetNo();
-
     return 0;
 }

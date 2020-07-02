@@ -2,6 +2,7 @@
 #define SPEED_H
 #include <string>
 #include <iostream>
+#include <curses.h>
 
 class Speed {
 private:
@@ -12,12 +13,14 @@ private:
 public:
     Speed(std::string n); //ctor
     void countScore();
-    void cantGetNo();
-    void timer();
+    void testCase();
+    ~Speed();
 private:
     bool compareChar(char first, char second);
     void checkScore();
     void checkEasterEggs();
     std::istream& getline (std::istream& is, std::string& str);
+    void draw_borders(WINDOW* screen);
+    static void timer();
 };
 #endif

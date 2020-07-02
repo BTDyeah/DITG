@@ -3,23 +3,82 @@
 #include <iostream>
 #include <chrono>
 #include <curses.h>
-/*Poruka od mene za mene: instaliraj sfml ovde na ubucnua*/
 
 Speed::Speed(std::string n){
     name = n;
     score = 0;
     testText = "So, so you think you can tell, Heaven from hell, Blue skies from pain, Can you tell a green field, From a cold steel rail? A smile from a veil? Do you think you can tell? Did they get you to trade, Your heroes for ghosts? Hot ashes for trees? Hot air for a cool breeze? Cold comfort for change? Did you exchange, A walk on part in the war, For a lead role in a cage? How I wish, how I wish you were here, We're just two lost souls, Swimming in a fish bowl, Year after year, Running over the same old ground, And how we found, The same old fears, Wish you were here\n";
+    initscr();
 }
 
-void Speed::countScore(){
-    checkEasterEggs();
-    std::cout << testText;
-    std::cout << "\nYou have 60 seconds! Start typing now: \n";
-    
-    getline(std::cin, userText);
+Speed::~Speed(){
+    endwin();
+}
 
-    int i, j;    
-    for(i = 0, j = 0; i < testText.length() && j < userText.length(); ++i, ++j){
+void Speed::countScore(){ //this is a big mess, but here lies the problem
+    
+  checkEasterEggs();  
+  int parent_x, parent_y, new_x, new_y;
+  int score_size = 3;
+
+  int secondsLeft = 10;
+  char c;  
+
+  //noecho();
+  //curs_set(0);
+
+  // set up initial windows
+  getmaxyx(stdscr, parent_y, parent_x);
+
+  WINDOW *field = newwin(parent_y - score_size, parent_x, 0, 0);
+  WINDOW *score = newwin(score_size, parent_x, parent_y - score_size, 0);
+
+  draw_borders(field);
+  draw_borders(score);
+
+  //wprintw(field,"", testText);
+  //mvwprintw(field,2,2,"\nYou have 60 seconds! Start typing now: \n");
+  //char* cuserText = userText.c_str();
+  //wgetstr(field, cuserText);
+
+
+  while(1) {
+    
+    getmaxyx(stdscr, new_y, new_x);
+
+    if (new_y != parent_y || new_x != parent_x) {
+      parent_x = new_x;
+      parent_y = new_y;
+
+      wresize(field, new_y - score_size, new_x);
+      wresize(score, score_size, new_x);
+      mvwin(score, new_y - score_size, 0);
+
+      wclear(stdscr);
+      wclear(field);
+      wclear(score);
+
+      draw_borders(field);
+      draw_borders(score);
+    }
+
+    // draw to our windows
+    mvwprintw(field, 1, 1, "Field"); //input
+    
+    mvwprintw(
+        score, 
+        1, 
+        1, 
+        "", 
+        timer
+    ); //timer that does not work, tried with a lambda too but does not work
+
+    /*std::string buffer;
+    while((c = wgetch(field)) != ERR){
+        buffer.push_back(c);
+    }
+    
+    for(int i = 0, j = 0; i < testText.length() && j < userText.length(); ++i, ++j){
         if(compareChar(testText[i], userText[j])){
             if(std::isspace(testText[i + 1]) || std::isspace(userText[j + 1]))
                 score++;
@@ -29,10 +88,15 @@ void Speed::countScore(){
         else 
             continue;
     }
-    checkScore();
+
+    checkScore();*/
+    // refresh each window
+    wrefresh(field);
+    wrefresh(score);
+  }
 }
 
-void Speed::checkScore() {
+void Speed::checkScore() { //the scoring system is totally random and will be improved over time(no printw() for now)
     if(score >= 20 && score < 50){
         std::cout << "\nCongratulations " << name << "! Your score is " << score
         << "! That is 20 or more so you passed the beginner test! Shine On You Crazy Diamond!\n";
@@ -70,123 +134,153 @@ void Speed::checkEasterEggs() { /*EASTER EGGS*/
     std::string favSong;
 
     if(name == "Metallica"){
-        std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+        printw("Hey! What's your favourite ", name, "'s song?\n");
         std::getline(std::cin,favSong);   
         if(favSong == "Blackend")
-            std::cout << "Great! Same as mine! Enjoy your typing game!\n\n";
+            printw("Great! Same as mine! Enjoy your typing game!\n\n");
         else
-            std::cout << "Great! Mine is \"Blackend\"! Enjoy your typing game!\n\n";
+            printw("Great! Mine is \"Blackend\"! Enjoy your typing game!\n\n");
     }
     else
         if(name == "The Beatles"){
-            std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+            printw("Hey! What's your favourite ", name, "'s song?\n");
             std::getline(std::cin,favSong);   
             
             if(favSong == "I wanna hold your hand")
-                std::cout << "Great! Same as mine! Enjoy your typing game!\n\n";
+                printw("Great! Same as mine! Enjoy your typing game!\n\n");
             else
-                std::cout << "Great! Mine is \"I wanna hold your hand\"! Enjoy your typing game!\n\n";
+                printw("Great! Mine is \"I wanna hold your hand\"! Enjoy your typing game!\n\n");
         }
         else
             if(name == "Pink Floyd"){
-                std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+                printw("Hey! What's your favourite ", name, "'s song?\n");
                 std::getline(std::cin,favSong);   
                 
                 if(favSong == "Hey You")
-                    std::cout << "Great! Same as mine! Enjoy your typing game!\n\n";
+                    printw("Great! Same as mine! Enjoy your typing game!\n\n");
                 else
-                    std::cout << "Great! Mine is \"Hey You\"!. Enjoy your typing game!\n\n";
+                    printw("Great! Mine is \"Hey You\"!. Enjoy your typing game!\n\n");
             }
             else
                 if(name == "Slayer"){
-                    std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+                    printw("Hey! What's your favourite ", name, "'s song?\n");
                     std::getline(std::cin,favSong);   
                     
-                    if(favSong == "Season in Abyss")
-                        std::cout << "Great! Same as mine! Enjoy your typing game!\n\n";
+                    if(favSong == "Seasons in the Abyss")
+                        printw("Great! Same as mine! Enjoy your typing game!\n\n");
                     else
-                        std::cout << "Great! Mine is \"Season in Abyss\"! Enjoy your typing game!\n\n";
+                        printw("Great! Mine is \"Season in Abyss\"! Enjoy your typing game!\n\n");
                 }
                 else
                     if(name == "Nirvana"){
-                        std::cout << "Hey! What's your favourite " << name << "'s song?\n";
+                        printw("Hey! What's your favourite ", name, "'s song?\n");
                         std::getline(std::cin,favSong);   
                         
                         if(favSong == "Drain You")
-                            std::cout << "Great! Same as mine! Enjoy your typing game!\n\n";
+                            printw("Great! Same as mine! Enjoy your typing game!\n\n");
                         else
-                            std::cout << "Great! Mine is \"Drain You\"! Enjoy your typing game!\n\n";
+                            printw("Great! Mine is \"Drain You\"! Enjoy your typing game!\n\n");
                     }
                     else {
-                        std::cout << "Hello " << name << "! Enjoy!\n\n";
+                        printw("Hello", name, "! Enjoy!\n\n");
                     }
 }
 
 std::istream& Speed::getline(std::istream& is, std::string& str){
-    
-    /*
-        The idea is to print an array of 60 elements, which represent seconds, then at every second to remove the highest number (60) until we get to
-        1 when user will be able to write but will be terminated. Ideally, i would terminate the input at that stage but i have no idea how+
-    */
-    //std::cout << "\n\n";
-    //auto start = std::chrono::high_resolution_clock::now();
-    /*WINDOW* screen = curscr;
-    int secondsLeft = 10;
     char c;
-    initscr();
-    newwin(1, 1, getmaxy(screen) / 2, getmaxx(screen));
-    refresh();
-    curs_set(2);
-    do {
-      printw("%i", secondsLeft);
-      refresh();
-      erase();
-      secondsLeft--;
-      napms(1000);
-    } 
-    while (secondsLeft > 0);
-    std::cout << "\n";
-    
-    newwin(1, 1, getmaxy(screen), getmaxx(screen));
-
     while (is.peek() != '\n') {
         is >> std::noskipws >> c;
         str.push_back(c);
-    }
-    endwin();*/
-    
-    int parent_x, parent_y;
-    int score_size = 3;
-    initscr(); 
-    noecho(); 
-    curs_set(FALSE); // get our maximum window dimensions 
-    getmaxyx(stdscr, parent_y, parent_x); // set up initial windows 
-    WINDOW *field = newwin(parent_y - score_size, parent_x, 0, 0); 
-    WINDOW *score = newwin(score_size, parent_x, parent_y - score_size, 0); // draw to our windows 
-    mvwprintw(field, 0, 0, "Field");
-    int secondsLeft = 10;
-    char c;
-    //curs_set(2);
-    do {
-      printw("%i", secondsLeft);
-      refresh();
-      erase();
-      secondsLeft--;
-      napms(1000);
-    } 
-    while (secondsLeft > 0); 
-    mvwprintw(score, 0, 0, "Score"); // refresh each window 
-    wrefresh(field); 
-    wrefresh(score); 
-    napms(10000); // clean up 
-    delwin(field); 
-    delwin(score); 
-    endwin();
+    }  
     return is;
 }
 
-void Speed::cantGetNo(){
-    std::string str;
-    getline(std::cin, str);   
-    std::cout << str << std::endl;
+/*std::istream& Speed::getline(std::istream& is, std::string& str){
+  int parent_x, parent_y, new_x, new_y;
+  int score_size = 3;
+
+  int secondsLeft = 10;
+  char c;  
+
+  noecho();
+  curs_set(FALSE);
+
+  // set up initial windows
+  getmaxyx(stdscr, parent_y, parent_x);
+
+  WINDOW *field = newwin(parent_y - score_size, parent_x, 0, 0);
+  WINDOW *score = newwin(score_size, parent_x, parent_y - score_size, 0);
+
+  draw_borders(field);
+  draw_borders(score);
+
+  while(1) {
+    getmaxyx(stdscr, new_y, new_x);
+
+    if (new_y != parent_y || new_x != parent_x) {
+      parent_x = new_x;
+      parent_y = new_y;
+
+      wresize(field, new_y - score_size, new_x);
+      wresize(score, score_size, new_x);
+      mvwin(score, new_y - score_size, 0);
+
+      wclear(stdscr);
+      wclear(field);
+      wclear(score);
+
+      draw_borders(field);
+      draw_borders(score);
+    }
+
+    // draw to our windows
+    mvwprintw(field, 1, 1, "Field");
+    
+    mvwprintw(score, 1, 1, "Score");
+
+    // refresh each window
+    wrefresh(field);
+    wrefresh(score);
+  } 
+  return is;
+}*/
+
+void Speed::draw_borders(WINDOW *screen) { 
+    int x, y, i;
+
+    getmaxyx(screen, y, x);
+
+      // 4 corners
+    mvwprintw(screen, 0, 0, "+");
+    mvwprintw(screen, y - 1, 0, "+");
+    mvwprintw(screen, 0, x - 1, "+");
+    mvwprintw(screen, y - 1, x - 1, "+");
+
+      // sides
+    for (i = 1; i < (y - 1); i++) {
+        mvwprintw(screen, i, 0, "|");
+        mvwprintw(screen, i, x - 1, "|");
+    }
+
+      // top and bottom
+    for (i = 1; i < (x - 1); i++) {
+        mvwprintw(screen, 0, i, "-");
+        mvwprintw(screen, y - 1, i, "-");
+    }
+}
+
+void Speed::timer(){
+
+    int parent_x, parent_y, new_x, new_y;
+    int score_size = 3;
+    WINDOW *score = newwin(score_size, parent_x, parent_y - score_size, 0);
+
+    int secondsLeft = 10;
+    do {  
+      mvwprintw(score,1,1,"%i", secondsLeft);
+      wrefresh(score);
+      werase(score);
+      secondsLeft--;
+      napms(1000);
+    } while (secondsLeft > 0);
 }
